@@ -7,7 +7,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 
 public class MainProgram {
-//	static ConcurrentHashMap<String, String> map;
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		/* create new Generator and Hashmap object */
@@ -39,27 +38,25 @@ public class MainProgram {
 		long endTime = System.nanoTime();
 		System.out.printf("reading .csv file took %d ms\n\n", (endTime - startTime) / 1000000);
 		startTime = System.nanoTime();
-		/*
-		 * now we want to create 3 Threads and create 40000 random numbers with them
-		 */
 		
+		int elements_per_thread = 400000;		
 
 		try {
-			GeneratorThread T1 = new GeneratorThread("1", 4000000, map);
-			GeneratorThread T2 = new GeneratorThread("2", 4000000, map);
-//			GeneratorThread T3 = new GeneratorThread("3", 40000, map);
+			GeneratorThread T1 = new GeneratorThread("1", elements_per_thread, map);
+			GeneratorThread T2 = new GeneratorThread("2", elements_per_thread, map);
+
 			T1.t.start();
 			T2.t.start();
-//			T3.t.start();
+
 			T1.t.join();
 			T2.t.join();
-//			T3.t.join();
+
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 		
 		endTime = System.nanoTime();
-		System.out.printf("creating specified amount of elements took %d ms\n\n", (endTime - startTime) / 1000000);
+		System.out.printf("creating %d elements took %d ms\n\n", (elements_per_thread*2), (endTime - startTime) / 1000000);
 		System.out.printf("%d elements in the map\n", map.size());
 
 		/* write the hashmap to csv file using a buffered writer */
